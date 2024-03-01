@@ -221,7 +221,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.3.1')//谷歌登录
 
     //twitter
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1' //测试是否编译加密
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-composer:3.1.1'
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
