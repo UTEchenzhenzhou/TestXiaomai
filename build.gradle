@@ -1,0 +1,232 @@
+plugins {
+    id 'com.android.application'
+    id'org.greenrobot.greendao' // apply plugin
+//    id'com.google.gms.google-services' //谷歌登录
+}
+
+static def releaseTime() {
+    return "("+new Date().format("yyyy-MM-dd HH_mm", TimeZone.getTimeZone("PRC"))+")"
+}
+
+static def releaseAppName() {
+    return "GloryFitPro"
+}
+
+android {
+    compileSdk 34
+    namespace = "com.yc.gloryfitpro"
+    defaultConfig {
+        applicationId "com.yc.gloryfitpro"
+        minSdk 21
+        targetSdk 34
+        versionCode 14
+        versionName "1.1.4"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+        ndk { //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('DayDayBand.keystore')
+            storePassword 'ute20160101'
+            keyAlias 'demo.keystore'
+            keyPassword 'ute20160101'
+        }
+        release {
+            storeFile file('DayDayBand.keystore')
+            storePassword 'ute20160101'
+            keyAlias 'demo.keystore'
+            keyPassword 'ute20160101'
+            v1SigningEnabled true //是否开启V1签名
+            v2SigningEnabled true //是否开启V2签名
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
+        }
+    }
+
+    //apk名字
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            def fileName
+//            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                fileName = "${releaseAppName()}_V${defaultConfig.versionName}_${releaseTime()}.apk"
+//                outputFileName = fileName
+//            }
+//        }
+//    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+dependencies {
+//    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    implementation files('libs/uteWatchSdk_Android_v1.0.6.aar')
+    implementation files('libs/uteAndroidSdk_v5.1.9.2.aar')
+
+    //通讯录功能拼音排序
+    implementation files('libs/pinyin4j-2.5.0.jar')//通讯录功能拼音排序
+    implementation files('libs/ActionsIbluz_v1.0.8.1.aar')//OTA SDK
+    implementation files('libs/ActionsOta_v1.0.8.aar')//OTA SDK
+
+    implementation files('libs/AMap_Location_V5.6.2_20211230.jar')//高德地图
+    implementation files('libs/Android_Map3D_SDK_V8.1.0_20211029.jar')//高德地图
+
+    implementation files('libs/jl_rcsp_V0.2.7-release.aar')//
+    implementation files('libs/JL_Watch_V1.7.1-release.aar')//
+    implementation files('libs/libammsdk.jar')//
+    implementation files('libs/open_sdk_r8353806_lite.jar')//
+
+    implementation files('libs/rtk-bbpro-core-1.8.0.jar')//
+    implementation files('libs/rtk-core-1.4.6.jar')//
+    implementation files('libs/rtk-dfu-3.6.9.jar')//
+
+    // 友盟统计SDK 引入libcrashsdk.so，libumeng-spy.so
+//  implementation files('libs/umeng-common-9.6.3+000.aar')// 必选 Google Play用
+    implementation files('libs/umeng-common-9.6.3.aar')// 必选
+    implementation files('libs/umeng-asms-armeabi-v1.8.0.aar')// 必选
+    implementation files('libs/umeng-apm-v1.9.2.aar')// U-APM产品包依赖(崩溃异常捕获)
+    implementation files('libs/uyumao-1.1.2.aar')//高级运营分析功能依赖库，请务必集成，以免影响应用安装卸载情况、及对异常设备的准确识别。common需搭配v9.6.3及以上版本，asms需搭配v1.7.0及以上版本
+    implementation files('libs/jl_bt_ota_V1.9.2-release.aar')//杰理 OTA
+
+    implementation files('libs/smlibrary-release.aar')//体感游戏
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    implementation 'com.jaeger.statusbarutil:library:1.5.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+//    androidTestImplementation 'androidx.multidex:multidex-instrumentation:2.0.0'
+    //相册表盘压缩库，APP层需要添加这个依赖
+    implementation 'net.jpountz.lz4:lz4:1.3.0'
+    //权限申请
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+    implementation 'io.reactivex:rxjava:1.3.0'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.8'
+    // 状态栏
+    implementation "com.jaeger.statusbarutil:library:1.4.0"
+    //mmkv
+    implementation 'com.tencent:mmkv-static:1.0.23'
+    //Dokit 测试工具
+//    debugImplementation 'io.github.didi.dokit:dokitx:3.7.1'
+//    releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.7.1'
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:2.1.12"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+    implementation "com.hwangjr.rxbus:rxbus:1.0.6"
+
+    // 网络请求
+    implementation "com.squareup.okhttp3:okhttp:3.10.0"
+    implementation "com.squareup.okio:okio:1.14.0"
+
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.squareup.retrofit2:converter-scalars:2.3.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
+
+    //下拉刷新，上拉加载更多
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
+    //图库框架
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+
+    //图形库
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    //imageview圆角
+    implementation 'com.makeramen:roundedimageview:2.2.1'
+    //greendao 数据库框架
+    implementation 'org.greenrobot:greendao:3.3.0'
+    //RecyclerView适配器（主要用于多运动功能）
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+    //文件上传和下载库--GitHub https://github.com/kongzue/BaseOkHttpV3
+    implementation 'com.github.kongzue:BaseOkHttpV3:3.2.4.2'
+
+    //一款下拉刷新控件
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //eventbus
+    implementation "org.greenrobot:eventbus:3.3.1"
+
+    //媒体播放
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.1'
+
+    //谷歌地图
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    //裁剪工具
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //滚动选择
+    implementation 'cn.carbswang.android:NumberPickerView:1.1.1'//文字处理
+//    zxing 扫码二维码
+    implementation 'com.google.zxing:core:3.3.0'
+    // Google Fit
+    implementation 'com.google.android.gms:play-services-fitness:21.0.1'
+    // Google Fit
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
+    // 加载中的View-- https://blog.csdn.net/u014608640/article/details/79752482
+    implementation "com.tuyenmonkey:mkloader:1.4.0"
+
+//    https://github.com/yanzhenjie/SwipeRecyclerView
+    implementation 'com.yanzhenjie.recyclerview:x:1.3.2'//recyclerview删除
+    //意见反馈上传图片和log到sso
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.9'
+
+    //Facebook登录
+    implementation 'com.facebook.android:facebook-login:13.2.0'
+    implementation 'com.google.android.gms:play-services-base:18.0.1'//谷歌登录
+    implementation platform('com.google.firebase:firebase-bom:29.3.1')//谷歌登录
+
+    //twitter
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
+    implementation 'com.twitter.sdk.android:tweet-composer:3.1.1'
+    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
+}
+greendao {
+    schemaVersion 6 //数据库版本号
+    daoPackage 'com.yc.gloryfitpro.dao'
+}
